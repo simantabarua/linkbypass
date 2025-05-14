@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link Extractor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="/script.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-white shadow p-4 text-center text-xl font-semibold text-blue-600">🔗 Link Extractor</header>
+
+    <main class="flex-grow p-6 max-w-3xl mx-auto w-full">
+        <form id="link-form" class="space-y-4">
+            <textarea id="link-input" rows="10" class="w-full p-4 border border-gray-300 rounded"
+                placeholder="Enter your URLs here, one per line..."></textarea>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Extract Links
+            </button>
+        </form>
+
+        <div id="results-section" class="mt-6 hidden">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-medium">Results</h2>
+
+                <button id="copy-button" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 text-sm">Copy
+                    All</button>
+            </div>
+            <div id="process">
+                
+            </div>
+            <pre id="results" class="bg-white border p-4 rounded text-sm max-h-64 overflow-y-auto whitespace-pre-wrap">
+            </pre>
+        </div>
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm p-4 bg-white border-t">&copy; <span id="year"></span> Link
+        Extractor</footer>
+
+</body>
+
+</html>
