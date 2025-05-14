@@ -13,7 +13,20 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 async function getFinalLink(adUrl) {
-  const browser = await puppeteer.launch({ headless: "new" });
+  const browser = await puppeteer.launch({
+    headless: "new",
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--no-first-run",
+      "--no-zygote",
+      "--single-process",
+      "--disable-gpu",
+    ],
+  });
+
   const page = await browser.newPage();
   try {
     await page.goto(adUrl, { waitUntil: "domcontentloaded" });
@@ -24,7 +37,7 @@ async function getFinalLink(adUrl) {
       if (btn) btn.click();
     });
 
-    await page.waitForNavigation({ waitUntil: "networkidle0"});
+    await page.waitForNavigation({ waitUntil: "networkidle0" });
     return page.url();
   } catch (err) {
     console.error(`❌ Failed for ${adUrl}:`, err.message);
@@ -36,7 +49,8 @@ async function getFinalLink(adUrl) {
 
 app.post("/api/process-links", async (req, res) => {
   const { links } = req.body;
-  if (!Array.isArray(links)) return res.status(400).json({ error: "Invalid links" });
+  if (!Array.isArray(links))
+    return res.status(400).json({ error: "Invalid links" });
 
   const results = [];
   for (const link of links) {
@@ -47,7 +61,9 @@ app.post("/api/process-links", async (req, res) => {
   res.json({ results });
 });
 
-app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Server running at http://localhost:${PORT}`)
+);
 app.post("/api/process-link", async (req, res) => {
   const { link } = req.body;
   if (!link) return res.status(400).json({ error: "Missing link" });
